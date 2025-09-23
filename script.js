@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- KONFIGURACJA ODLICZANIA ---
     // Wpisz datę premiery tutaj. Format: "Miesiąc Dzień, Rok Godzina:Minuta:Sekunda"
     // Aby ukryć pasek, zostaw pusty cudzysłów: ""
-    const countdownDate = "October 01, 2025 20:30:00";
+    const countdownDate = "October 10, 2025 20:30:00";
 
     // --- LOGIKA INTELIGENTNEGO PASKA ODLICZANIA ---
     const countdownBanner = document.getElementById('countdown-banner');
