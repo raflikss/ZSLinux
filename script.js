@@ -1,5 +1,60 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    // --- KONFIGURACJA ODLICZANIA ---
+    // Wpisz datę premiery tutaj. Format: "Miesiąc Dzień, Rok Godzina:Minuta:Sekunda"
+    // Aby ukryć pasek, zostaw pusty cudzysłów: ""
+    const countdownDate = "October 01, 2025 20:30:00";
+
+    // --- LOGIKA INTELIGENTNEGO PASKA ODLICZANIA ---
+    const countdownBanner = document.getElementById('countdown-banner');
+    const header = document.getElementById('main-header');
+    if (countdownDate && countdownBanner) {
+        countdownBanner.style.display = 'block';
+        header.classList.add('with-banner');
+        
+        const countdownTimerEl = document.getElementById('countdown-timer');
+        const countdownTextEl = document.getElementById('countdown-text');
+        const monthsEl = document.getElementById('months');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        
+        const targetDate = new Date(countdownDate).getTime();
+
+        const updateCountdown = () => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(interval);
+                let lang = document.documentElement.lang;
+                countdownTimerEl.innerHTML = lang === 'en' ? "Launch is Live!" : "Premiera już dostępna!";
+                countdownTextEl.style.display = 'none';
+                return;
+            }
+            
+            const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const months = Math.floor(totalDays / 30.4375);
+            const days = Math.floor(totalDays % 30.4375);
+            
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const format = (num) => num < 10 ? '0' + num : num;
+
+            monthsEl.innerText = format(months);
+            daysEl.innerText = format(days);
+            hoursEl.innerText = format(hours);
+            minutesEl.innerText = format(minutes);
+            secondsEl.innerText = format(seconds);
+        };
+
+        const interval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    }
+
     // --- Inicjalizacja biblioteki AOS (Animate On Scroll) ---
     AOS.init({
         duration: 800,
@@ -9,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // --- Zmiana wyglądu nagłówka przy przewijaniu ---
-    const header = document.getElementById('main-header');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 10) {
             header.classList.add('scrolled');
@@ -34,33 +88,56 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Dynamiczna zmiana obrazu przy przewijaniu (Scrollytelling) ---
+    // --- ULEPSZONA ANIMACJA SCROLLYTELLING ---
     const stickyImage = document.getElementById('sticky-image');
     const featurePoints = document.querySelectorAll('.feature-point');
+    let currentImageSrc = stickyImage ? stickyImage.src : '';
 
-    if (stickyImage && featurePoints.length > 0) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const featurePoint = entry.target;
-                    const newImageSrc = featurePoint.dataset.image;
-                    featurePoints.forEach(fp => fp.classList.remove('active'));
-                    featurePoint.classList.add('active');
-                    if (stickyImage.src.includes(newImageSrc) === false) {
-                        stickyImage.style.opacity = '0.5';
-                        setTimeout(() => {
-                            stickyImage.src = newImageSrc;
-                            stickyImage.style.opacity = '1';
-                        }, 250);
-                    }
-                }
+    function handleScrollAnimation() {
+        if (!stickyImage || featurePoints.length === 0 || window.innerWidth <= 992) {
+            featurePoints.forEach(point => {
+                point.style.opacity = '1';
+                point.style.transform = 'translateY(0px)';
             });
-        }, { 
-            threshold: 0.7,
-            rootMargin: "-20% 0px -20% 0px"
+            return;
+        }
+
+        const triggerPoint = window.innerHeight * 0.5;
+        let activeFeature = null;
+        let minDistance = Infinity;
+
+        featurePoints.forEach(point => {
+            const rect = point.getBoundingClientRect();
+            const elementCenter = rect.top + rect.height / 2;
+            const distanceFromCenter = Math.abs(elementCenter - triggerPoint);
+            const proximity = Math.max(0, 1 - distanceFromCenter / (window.innerHeight * 0.5));
+            point.style.opacity = Math.pow(proximity, 3).toFixed(2);
+            point.style.transform = `translateY(${(1 - proximity) * 30}px)`;
+
+            if (distanceFromCenter < minDistance) {
+                minDistance = distanceFromCenter;
+                activeFeature = point;
+            }
         });
-        featurePoints.forEach(point => observer.observe(point));
+        
+        if (activeFeature) {
+            const newImageSrc = activeFeature.dataset.image;
+            if (newImageSrc && currentImageSrc !== newImageSrc) {
+                currentImageSrc = newImageSrc;
+                stickyImage.style.opacity = '0.5';
+                stickyImage.style.transform = 'translate(-50%, -50%) scale(0.95) rotateY(10deg)';
+                setTimeout(() => {
+                    stickyImage.src = newImageSrc;
+                    stickyImage.style.opacity = '1';
+                    stickyImage.style.transform = 'translate(-50%, -50%) scale(1) rotateY(0deg)';
+                }, 300);
+            }
+        }
     }
+    
+    window.addEventListener('scroll', handleScrollAnimation);
+    window.addEventListener('resize', handleScrollAnimation);
+    handleScrollAnimation();
 
     // --- Funkcjonalność Lightboxa dla Galerii ---
     const lightbox = document.getElementById('lightbox');
@@ -68,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const galleryItems = document.querySelectorAll('[data-gallery-item]');
     let currentIndex = 0;
 
-    if (lightbox) {
+    if (lightbox && galleryItems.length > 0) {
         const openLightbox = (index) => {
             currentIndex = index;
             const imgSrc = galleryItems[currentIndex].querySelector('img').src;
@@ -107,5 +184,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
 });

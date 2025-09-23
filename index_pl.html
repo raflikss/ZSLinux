@@ -16,6 +16,20 @@
 </head>
 <body>
 
+    <!-- NOWY, INTELIGENTNY PASEK Z ODLICZANIEM -->
+    <div id="countdown-banner">
+        <div class="container">
+            <span id="countdown-text">Premiera ZSLinux za:</span>
+            <div id="countdown-timer" class="countdown-timer">
+                <div class="timer-block"><span id="months">00</span><div class="label">Miesięcy</div></div>
+                <div class="timer-block"><span id="days">00</span><div class="label">Dni</div></div>
+                <div class="timer-block"><span id="hours">00</span><div class="label">Godzin</div></div>
+                <div class="timer-block"><span id="minutes">00</span><div class="label">Minut</div></div>
+                <div class="timer-block"><span id="seconds">00</span><div class="label">Sekund</div></div>
+            </div>
+        </div>
+    </div>
+
     <header id="main-header">
         <nav class="container">
             <a href="#" class="logo"><img src="logo.webp" alt="ZSLinux Logo"></a>
@@ -101,7 +115,42 @@
         </section>
 
         <section id="advantage">
-             <!-- ... treść bez zmian ... -->
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">Przewaga ZSLinux.</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Zobacz, dlaczego ZSLinux to świadomy wybór dla tych, którzy wymagają więcej.</p>
+                <div class="comparison-table" data-aos="fade-up" data-aos-delay="200">
+                    <div class="table-header">
+                        <div>Funkcja</div>
+                        <div>ZSLinux</div>
+                        <div>Standardowe Dystrybucje</div>
+                        <div>Windows</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="feature-name">Zoptymalizowane Jądro</div>
+                        <div><i class="fas fa-check-circle check"></i> XanMod</div>
+                        <div><i class="fas fa-minus-circle neutral"></i> Standardowe</div>
+                        <div><i class="fas fa-times-circle cross"></i> Zamknięte NT</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="feature-name">Lekkość Środowiska</div>
+                        <div><i class="fas fa-check-circle check"></i> XFCE</div>
+                        <div><i class="fas fa-minus-circle neutral"></i> GNOME/KDE</div>
+                        <div><i class="fas fa-times-circle cross"></i> Ciężkie Shell</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="feature-name">Aplikacje Windows</div>
+                        <div><i class="fas fa-check-circle check"></i> Wine (Wbudowane)</div>
+                        <div><i class="fas fa-minus-circle neutral"></i> Do instalacji</div>
+                        <div><i class="fas fa-check-circle check"></i> Natywnie</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="feature-name">Prywatność i Kontrola</div>
+                        <div><i class="fas fa-check-circle check"></i> Pełna</div>
+                        <div><i class="fas fa-check-circle check"></i> Wysoka</div>
+                        <div><i class="fas fa-times-circle cross"></i> Ograniczona</div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="gallery">
@@ -120,7 +169,7 @@
         
         <section id="cta" class="container">
             <div class="cta-content" data-aos="zoom-in">
-                <img src="tux.gif" alt="Tux 3D" class="cta-image">
+                <img src="tux-3d-placeholder.webp" alt="Tux 3D" class="cta-image">
                 <h2>Doświadcz ewolucji.</h2>
                 <p>Dołącz do społeczności, która ceni wydajność, wolność i design. Pobieranie ZSLinux jest darmowe i zawsze będzie.</p>
                 <a href="https://mega.nz/TWOJ-LINK-DO-PLIKU" target="_blank" class="cta-button">Pobierz ZSLinux v3.9 teraz</a>
