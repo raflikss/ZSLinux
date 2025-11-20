@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZSLinux | Web Desktop Environment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- === NEW: SLIDING BACKGROUND TEXT === -->
+    <div class="background-streams">
+        <!-- Stream 1 (Slow Left) -->
+        <div class="stream-row left-fast">
+            <span>KERNEL_6.6.9 // WAYLAND_NATIVE // HYPRLAND_COMPOSITOR // PIPEWIRE_AUDIO // ZSLINUX_ARCH // </span>
+            <span>KERNEL_6.6.9 // WAYLAND_NATIVE // HYPRLAND_COMPOSITOR // PIPEWIRE_AUDIO // ZSLINUX_ARCH // </span>
+        </div>
+        
+        <!-- Stream 2 (Fast Right) -->
+        <div class="stream-row right-slow">
+            <span>SYSTEM_OPTIMIZED // ZERO_LATENCY // RUST_CORE // LLM_INTEGRATED // MEMORY_SAFE // </span>
+            <span>SYSTEM_OPTIMIZED // ZERO_LATENCY // RUST_CORE // LLM_INTEGRATED // MEMORY_SAFE // </span>
+        </div>
+
+        <!-- Stream 3 (Slow Left) -->
+        <div class="stream-row left-slow">
+            <span>BUILD_2025.11 // ROLLING_RELEASE // STABLE_BRANCH // SECURE_BOOT // ENCRYPTED // </span>
+            <span>BUILD_2025.11 // ROLLING_RELEASE // STABLE_BRANCH // SECURE_BOOT // ENCRYPTED // </span>
+        </div>
+    </div>
+    
+    <!-- === TEMPLATES === -->
+    <template id="tmpl-home">
+        <h1 class="type-target">THE CRYSTAL STANDARD</h1>
+        <p class="type-target sub-text">Environment: Arch Core / XanMod Kernel / Hyprland</p>
+        <div class="fade-target bento-grid">
+            <div class="stat-box">
+                <div class="label">KERNEL</div>
+                <div class="value">6.6.9-xanmod1</div>
+            </div>
+            <div class="stat-box">
+                <div class="label">MEMORY</div>
+                <div class="value">~380MB (Idle)</div>
+            </div>
+            <div class="stat-box">
+                <div class="label">LATENCY</div>
+                <div class="value">&lt; 0.1ms</div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tmpl-features">
+        <h2 class="type-target">SYSTEM CAPABILITIES</h2>
+        <div class="feature-list">
+            <div class="feature-item fade-target">
+                <div class="f-header type-target">XANMOD CORE</div>
+                <p class="type-target">High-throughput custom kernel compiled with -O3 optimizations.</p>
+            </div>
+            <div class="feature-item fade-target">
+                <div class="f-header type-target">HYPRLAND NATIVE</div>
+                <p class="type-target">Dynamic tiling Wayland compositor. Hand-written shaders for glassmorphism.</p>
+            </div>
+            <div class="feature-item fade-target">
+                <div class="f-header type-target">NEURAL ENGINE</div>
+                <p class="type-target">Pre-packaged local LLM integration for automated troubleshooting.</p>
+            </div>
+        </div>
+    </template>
+
+    <template id="tmpl-specs">
+        <h2 class="type-target">TECHNICAL SPECIFICATIONS</h2>
+        <table class="spec-table fade-target">
+            <tr><td class="t-head">Base System</td><td>Arch Linux Rolling</td></tr>
+            <tr><td class="t-head">Kernel Build</td><td>XanMod Stable + LTO</td></tr>
+            <tr><td class="t-head">Compositor</td><td>Hyprland (Wayland)</td></tr>
+            <tr><td class="t-head">Init System</td><td>Systemd (Minimal)</td></tr>
+            <tr><td class="t-head">Filesystem</td><td>BTRFS + Snapper</td></tr>
+        </table>
+    </template>
+
+    <!-- === DESKTOP === -->
+    <main id="desktop">
+        <div class="background-mesh"></div>
+
+        <!-- Watermark Branding (Still keeping this) -->
+        <div class="bg-branding">ZSLINUX</div>
+
+        <!-- Windows -->
+        <div class="window active-window" id="window-content" style="top: 8%; left: 8%;">
+            <div class="title-bar">
+                <div class="traffic-lights">
+                    <div class="light close"></div>
+                    <div class="light min"></div>
+                    <div class="light max"></div>
+                </div>
+                <span class="title-text">System Viewer</span>
+            </div>
+            <div class="window-body" id="content-viewer"></div>
+        </div>
+
+        <div class="window" id="window-terminal" style="top: 18%; left: 50%;">
+            <div class="title-bar">
+                <div class="traffic-lights">
+                    <div class="light close"></div>
+                    <div class="light min"></div>
+                    <div class="light max"></div>
+                </div>
+                <span class="title-text">user@zslinux:~</span>
+            </div>
+            <div class="terminal-interface" id="terminal-scroll-area">
+                <div class="output-log" id="output-log">
+                    <div class="line">ZSLinux Kernel v6.6.9 loaded.</div>
+                    <div class="line">Web Environment initialized.</div>
+                    <br>
+                    <div class="line">Type <span class="highlight">'help'</span> for commands.</div>
+                    <div class="line">Type <span class="highlight">'navigate features'</span> to start.</div>
+                    <br>
+                </div>
+                <div class="input-line">
+                    <span class="prompt">➜  ~</span>
+                    <input type="text" id="cmd-input" autocomplete="off" spellcheck="false" autofocus>
+                </div>
+            </div>
+        </div>
+
+        <!-- Taskbar -->
+        <nav class="taskbar">
+            <div class="start-btn">⟁</div>
+            <div class="separator"></div>
+            <div class="running-apps">
+                <div class="app-icon" onclick="document.getElementById('window-content').style.zIndex=50">Viewer</div>
+                <div class="app-icon" onclick="document.getElementById('window-terminal').style.zIndex=50">Term</div>
+            </div>
+            <div class="separator"></div>
+            <div class="clock" id="clock">12:00</div>
+        </nav>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

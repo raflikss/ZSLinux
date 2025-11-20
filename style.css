@@ -1,0 +1,189 @@
+:root {
+    /* Theme Variables */
+    --bg-color: #e2e8f0;
+    --win-bg: rgba(248, 250, 252, 0.8);
+    --win-border: rgba(255, 255, 255, 0.8);
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --primary: #2563eb;
+    --accent: #0ea5e9;
+    --term-bg: #0f172a;
+    --term-text: #f1f5f9;
+    --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    --blur-amount: 12px;
+}
+
+[data-theme="dark"] {
+    --bg-color: #020617;
+    --win-bg: rgba(15, 23, 42, 0.85);
+    --win-border: rgba(255, 255, 255, 0.1);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary: #3b82f6;
+    --accent: #38bdf8;
+    --term-bg: #000000;
+    --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-color);
+    overflow: hidden;
+    height: 100vh;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* --- 1. SLIDING BACKGROUND TEXT --- */
+.background-streams {
+    position: fixed;
+    top: 0;
+    left: -50%; /* Start wider to account for rotation */
+    width: 200%;
+    height: 100%;
+    z-index: -2; /* Behind everything */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6vh;
+    transform: rotate(-8deg); /* The tech-angle */
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.4; /* Adjust visibility */
+}
+
+.stream-row {
+    display: flex;
+    width: max-content; /* Ensure content determines width */
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 6rem; /* HUGE text */
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.stream-row span {
+    color: transparent; /* Hollow text effect */
+    -webkit-text-stroke: 2px var(--text-muted); /* Use CSS var for theme capability */
+    opacity: 0.15; /* Subtle opacity for the stroke */
+    margin-right: 2rem; /* Spacing between repeats */
+}
+
+/* Animations */
+.left-fast { animation: slideLeft 30s linear infinite; }
+.left-slow { animation: slideLeft 60s linear infinite; }
+.right-slow { animation: slideRight 45s linear infinite; }
+
+@keyframes slideLeft {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+@keyframes slideRight {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+}
+
+/* --- 2. STATIC BRANDING (Adjusted position) --- */
+.bg-branding {
+    position: fixed;
+    bottom: 0; /* Moved to bottom right for balance */
+    right: -2%;
+    font-size: 12vw;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 800;
+    color: var(--text-main);
+    opacity: 0.03; 
+    z-index: -3;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -5px;
+}
+
+/* --- 3. GRADIENT MESH --- */
+.background-mesh {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+    z-index: -3;
+    filter: blur(60px);
+}
+
+/* --- 4. WINDOWS --- */
+#desktop { position: relative; width: 100%; height: 100%; }
+
+.window {
+    position: absolute;
+    width: 550px;
+    min-height: 380px;
+    background: var(--win-bg);
+    border: 1px solid var(--win-border);
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    border-radius: 10px;
+    box-shadow: var(--glass-shadow);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    overflow: hidden;
+}
+@keyframes popIn { from{ transform:scale(0.95) translateY(10px); opacity:0; } to{ transform:scale(1) translateY(0); opacity:1;} }
+
+.window.active-window { z-index: 50; border-color: var(--accent); box-shadow: 0 40px 70px rgba(0,0,0,0.15); }
+
+.title-bar {
+    height: 34px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    border-bottom: 1px solid var(--win-border);
+    display: flex; align-items: center; padding: 0 12px;
+    cursor: grab; user-select: none;
+}
+.title-bar:active { cursor: grabbing; }
+.title-text { flex-grow: 1; text-align: center; font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+.traffic-lights { display: flex; gap: 6px; }
+.light { width: 10px; height: 10px; border-radius: 50%; }
+.close{background:#ff5f57;} .min{background:#febc2e;} .max{background:#28c840;}
+
+.window-body { padding: 2.5rem; flex-grow: 1; overflow-y: auto; color: var(--text-main); }
+
+/* Typography within Windows */
+h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-bottom: 5px; border-left: 4px solid var(--primary); padding-left: 1rem; }
+h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid var(--win-border); padding-bottom: 10px; }
+p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.5rem; }
+.f-header { font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+
+.bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 2rem; opacity: 0; }
+.stat-box { background: rgba(0,0,0,0.03); border: 1px solid var(--win-border); padding: 10px; border-radius: 4px; text-align: center; }
+.stat-box .label { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; }
+.stat-box .value { font-size: 1rem; font-weight: 700; font-family: 'Fira Code', monospace; color: var(--text-main); margin-top: 4px; }
+
+.spec-table { width: 100%; border-collapse: collapse; opacity: 0; }
+.spec-table td { padding: 8px; font-size: 0.9rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.spec-table .t-head { font-weight: 600; color: var(--text-muted); width: 40%; }
+
+/* Terminal */
+#window-terminal { width: 650px; background: var(--term-bg); border-color: rgba(255,255,255,0.1); }
+#window-terminal .title-bar { background: rgba(255,255,255,0.05); }
+.terminal-interface { padding: 1.5rem; font-family: 'Fira Code', monospace; color: var(--term-text); font-size: 0.9rem; overflow-y: auto; height: 100%; }
+.input-line { display: flex; }
+.prompt { color: var(--primary); margin-right: 8px; font-weight: 700; }
+.highlight { color: var(--accent); }
+#cmd-input { background: transparent; border: none; color: inherit; flex-grow: 1; font-family: inherit; font-size: inherit; }
+
+/* Taskbar */
+.taskbar {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    height: 45px; padding: 0 15px; gap: 10px;
+    background: var(--win-bg); backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    border: 1px solid var(--win-border); border-radius: 8px;
+    display: flex; align-items: center; box-shadow: var(--glass-shadow); z-index: 100;
+}
+.start-btn { font-size: 1.2rem; cursor: pointer; }
+.separator { width: 1px; height: 50%; background: rgba(0,0,0,0.1); }
+.app-icon { padding: 5px 10px; font-size: 0.8rem; border-radius: 4px; cursor: pointer; color: var(--text-muted); transition: 0.2s; }
+.app-icon:hover { background: rgba(0,0,0,0.05); color: var(--text-main); }
+.clock { font-weight: 700; font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; }
